@@ -27,3 +27,17 @@ nm = {
 
 db.collection('Message').add(nm)
 
+print("Geting last 3 messages")
+
+#last_5_mins = dt.datetime.now(dt.timezone(offset=-dt.timedelta(hours=2) - dt.timedelta(minutes=5)
+
+#query = messages_ref.where(u'origin', u'>=', u'Python')
+query = messages_ref.order_by(u'time', direction=firestore.Query.DESCENDING).limit(3)
+
+q_res = query.stream()
+
+for m in q_res:
+    print(f'{m.id} => {m.to_dict()}')
+
+
+
