@@ -1,16 +1,15 @@
 import requests
 import json
-import pandas as pd
 from dotenv import dotenv_values
 
 API_KEY = None
 
 # Some selected locations for towns, as looked up on https://latitudelongitude.org/
 LOCATIONS = {
-    'Biella'          : (45.5663, 8.05499),
-    'Frankfurt'       : (50.11552, 8.68417),
-    'Mainz'           : (49.98419, 8.2791),
-    'Ruesslesheim'    : (49.98955, 8.42251),
+    'Biella'          : {'lat' : 45.56630, 'lon' : 8.05499},
+    'Frankfurt'       : {'lat' : 50.11552, 'lon' : 8.68417},
+    'Mainz'           : {'lat' : 49.98419, 'lon' : 8.27910},
+    'Ruesselsheim'     : {'lat' : 49.98955, 'lon' : 8.42251},
     }
 
 # The key to actually select from the response
@@ -67,7 +66,7 @@ def flatten(d, prefix = '', rel_keys = None) :
 
 # -------------------------------------------------------------------
 
-def get_weather_data([lat, lon]):
+def get_weather_data(lat, lon):
     """ Get the current weather data for a location
 
     Retrieves and converts the weather data for a given lat-lon
@@ -99,8 +98,8 @@ def get_weather_data([lat, lon]):
         d = flatten(data['current'], rel_keys=weather_rel_keys)
         # Merge all info and build dataframe
         result.update(d)
-        df_result = pd.DataFrame(result, index = [1])
-        return df_result
+        #df_result = pd.DataFrame(result, index = [1])
+        return result
     else :
         # Something caused an error in the RECT call - pass on
         raise Exception('OpenWeatherMap API replied with error {}'.format(response.status_code))
@@ -109,6 +108,6 @@ if __name__ == '__main__' :
     config = dotenv_values('api_key.env')
     print('Using API Key: {}'.format(config['OPENWEATHERMAP_API_KEY']))
     init_api_key(config['OPENWEATHERMAP_API_KEY'])
-    print(get_weather_data(LOCATIONS['Ruesselsheim']))
+    print(get_weather_data(LOCATIONS['Ruesselsheim']['lat'], LOCATIONS['Ruesselsheim']['lon']))
 
 

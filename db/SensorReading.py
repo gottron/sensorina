@@ -1,5 +1,10 @@
 import datetime as dt
 
+TEMPERATURE = 'Temperature'
+HUMIDITY = 'Humidity'
+PRESSURE = 'Pressure'
+BRIGHTNESS = 'Brightness'
+SOIL_HUMIDITY = 'SoilHumidity'
 
 class SensorReading(object):
 
